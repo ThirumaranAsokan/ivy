@@ -5,47 +5,42 @@ from typing import Optional, Union
 # local
 import ivy
 
+class MyArray(ArrayWithActivations):
+    def __init__(self, data: Union[ivy.Array, ivy.NativeArray]):
+        self._data = data
 
-# ToDo: implement all methods here as public instance methods
-
-
-class ArrayWithActivations(abc.ABC):
-    def relu(self: ivy.Array, /, *, out: Optional[ivy.Array] = None) -> ivy.Array:
+    @abc.abstractmethod
+    def get_data(self) -> Union[ivy.Array, ivy.NativeArray]:
         """
-        ivy.Array instance method variant of ivy.relu. This method simply wraps the
-        function, and so the docstring for ivy.relu also applies to this method
-        with minimal changes.
-
-        Examples
-        --------
-        >>> x = ivy.array([-1., 0., 1.])
-        >>> y = x.relu()
-        >>> print(y)
-        ivy.array([0., 0., 1.])
+        Returns the data stored in the array.
         """
-        return ivy.relu(self._data, out=out)
+        pass
 
-    def leaky_relu(
-        self: ivy.Array,
-        /,
-        *,
-        alpha: float = 0.2,
-        out: Optional[ivy.Array] = None,
-    ) -> ivy.Array:
+    @abc.abstractmethod
+    def set_data(self, data: Union[ivy.Array, ivy.NativeArray]):
         """
-        ivy.Array instance method variant of ivy.leaky_relu. This method simply wraps
-        the function, and so the docstring for ivy.leaky_relu also applies to this
-        method with minimal changes.
-
-        Examples
-        --------
-        >>> x = ivy.array([0.39, -0.85])
-        >>> y = x.leaky_relu()
-        >>> print(y)
-        ivy.array([ 0.39, -0.17])
+        Sets the data stored in the array.
         """
-        return ivy.leaky_relu(self._data, alpha=alpha, out=out)
+        pass
 
+x = MyArray(data=[-1.0, 0.0, 1.0])
+y = x.relu()
+
+    import numpy as np
+
+    class ivyArray:
+      def __init__(self, data):
+        self._data = data
+
+      def leaky_relu(self, alpha=0.2):
+        return ivyArray(np.maximum(self._data, alpha * self._data))
+
+
+    def leaky_relu(x, alpha=0.2):
+      return ivyArray(np.maximum(x, alpha * x))
+
+
+    
     def gelu(
         self: ivy.Array,
         /,
